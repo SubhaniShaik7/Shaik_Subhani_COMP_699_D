@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="task-container">
+
+    <h2>Task Management</h2>
+
+    <p class="page-description">
+        Manage your relocation tasks here. You can update status, set priority, assign due dates, and add custom tasks.
+    </p>
+
+    <!-- ================= ADD TASK ================= -->
+    <div class="task-section">
+
+        <h3>Add Custom Task</h3>
+
+        <form action="{{ url_for('task.add') }}" method="POST" class="task-form">
+
+            <input type="hidden" name="plan_id" value="{{ plan_id }}">
+
+            <div class="form-group">
+                <label>Task Title</label>
+                <input type="text" name="title" required>
+            </div>
+
+            <div class="form-group">
+                <label>Category</label>
+                <select name="category">
+                    <option value="housing">Housing</option>
+                    <option value="documents">Documents</option>
+                    <option value="utilities">Utilities</option>
+                    <option value="services">Services</option>
+                    <option value="custom">Custom</option>
+                </select>
+            </div>
+
+            <button type="submit" class="primary-btn">Add Task</button>
+
+        </form>
+
+    </div>
+
+
+    <!-- ================= TASK LIST ================= -->
+    <div class="task-section">
+
+        <h3>Your Tasks</h3>
+
+        {% if tasks %}
+        <table class="task-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Priority</th>
+                    <th>Due Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for task in tasks %}
+                <tr>
+
+                    <td>{{ task.title }}</td>
+                    <td>{{ task.category }}</td>
+                    <td>{{ task.status }}</td>
+                    <td>{{ task.priority }}</td>
+                    <td>{{ task.due_date if task.due_date else "Not Set" }}</td>
+
+                    <td>
+
+                        <!-- COMPLETE -->
+                        <a href="{{ url_for('task.complete', task_id=task.id) }}" class="btn">
+                            Complete
+                        </a>
+
+                        <!-- DELETE -->
+                        <a href="{{ url_for('task.delete', task_id=task.id) }}" class="btn danger-btn">
+                            Delete
+                        </a>
+
+                        <!-- SET PRIORITY -->
+                        <form action="{{ url_for('task.priority', task_id=task.id) }}" method="POST">
+                            <select name="priority">
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                            <button type="submit">Set</button>
+                        </form>
+
+                        <!-- SET DUE DATE -->
+                        <form action="{{ url_for('task.due', task_id=task.id) }}" method="POST">
+                            <input type="text" name="due_date" placeholder="YYYY-MM-DD HH:MM:SS">
+                            <button type="submit">Set</button>
+                        </form>
+
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% else %}
+            <p>No tasks available. Add tasks to begin planning.</p>
+        {% endif %}
+
+    </div>
+
+    <!-- ================= NAVIGATION ================= -->
+    <div class="navigation-section">
+        <a href="{{ url_for('dashboard.view_dashboard') }}" class="secondary-btn">
+            Back to Dashboard
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

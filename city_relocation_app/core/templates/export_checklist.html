@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="checklist-container">
+
+    <h2>Relocation Checklist</h2>
+
+    <p class="page-description">
+        This checklist provides a complete overview of your relocation tasks. 
+        You can review your progress and ensure all important steps are completed.
+    </p>
+
+    {% if checklist %}
+
+    <!-- ================= CHECKLIST TABLE ================= -->
+    <table class="checklist-table">
+
+        <thead>
+            <tr>
+                <th>Task Title</th>
+                <th>Status</th>
+                <th>Due Date</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for item in checklist %}
+            <tr>
+
+                <td>{{ item.title }}</td>
+
+                <td>
+                    {% if item.status == "completed" %}
+                        Completed
+                    {% else %}
+                        Pending
+                    {% endif %}
+                </td>
+
+                <td>
+                    {% if item.due_date %}
+                        {{ item.due_date }}
+                    {% else %}
+                        Not Set
+                    {% endif %}
+                </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+    {% else %}
+        <p>No checklist data available.</p>
+    {% endif %}
+
+
+    <!-- ================= ACTIONS ================= -->
+    <div class="checklist-actions">
+
+        <button onclick="window.print()" class="primary-btn">
+            Print / Save as PDF
+        </button>
+
+    </div>
+
+
+    <!-- ================= NAVIGATION ================= -->
+    <div class="navigation-section">
+        <a href="{{ url_for('dashboard.view_dashboard') }}" class="secondary-btn">
+            Back to Dashboard
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

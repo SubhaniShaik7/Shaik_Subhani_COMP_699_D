@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="services-container">
+
+    <h2>Nearby Services</h2>
+
+    <p class="page-description">
+        Explore essential services available in your selected city. 
+        These services help you settle quickly by providing access to hospitals, banks, stores, and utilities.
+    </p>
+
+    {% if services %}
+
+        <!-- ================= SERVICE LIST ================= -->
+        <div class="service-list">
+
+            {% for service in services %}
+            <div class="service-card">
+
+                <h3>{{ service.name }}</h3>
+
+                <p><strong>Type:</strong> {{ service.type }}</p>
+
+                {% if service.address %}
+                <p><strong>Address:</strong> {{ service.address }}</p>
+                {% endif %}
+
+                {% if service.contact_info %}
+                <p><strong>Contact:</strong> {{ service.contact_info }}</p>
+                {% endif %}
+
+            </div>
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+        <p>No services available for this city.</p>
+    {% endif %}
+
+    <!-- ================= NAVIGATION ================= -->
+    <div class="navigation-section">
+        <a href="{{ url_for('dashboard.view_dashboard') }}" class="secondary-btn">
+            Back to Dashboard
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

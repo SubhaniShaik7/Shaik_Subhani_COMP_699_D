@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="relocation-container">
+
+    <!-- ================= HEADER ================= -->
+    <div class="page-header">
+        <h2>Create Your Relocation Plan</h2>
+        <p>
+            Choose your destination city and let the system prepare a structured
+            relocation plan with essential tasks.
+        </p>
+    </div>
+
+
+    <div class="relocation-grid">
+
+        <!-- ================= FORM CARD ================= -->
+        <div class="form-card">
+
+            <h3>Select Destination</h3>
+
+            {% if is_empty %}
+            <div class="empty-state">
+                No cities available. Please contact admin.
+            </div>
+            {% else %}
+
+            <form action="{{ url_for('planner.create_plan') }}" method="POST" class="relocation-form">
+
+                <div class="form-group">
+                    <label>Select City</label>
+
+                    <select name="city_id" required class="custom-select">
+                        <option value="">-- Choose a City --</option>
+
+                        {% for city in cities %}
+                        <option value="{{ city.id }}">
+                            {{ city.name }}{% if city.state %}, {{ city.state }}{% endif %}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <button type="submit" class="primary-btn full-width">
+                    Create Plan
+                </button>
+
+            </form>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- ================= INFO CARD ================= -->
+        <div class="info-card">
+
+            <h3>What happens next?</h3>
+
+            <ul>
+                <li>✔ A relocation plan will be created instantly</li>
+                <li>✔ Tasks for housing, utilities, and documents are auto-added</li>
+                <li>✔ You can customize tasks anytime</li>
+                <li>✔ Track progress directly from your dashboard</li>
+            </ul>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= NAVIGATION ================= -->
+    <div class="navigation-section">
+        <a href="{{ url_for('dashboard.view_dashboard') }}" class="secondary-btn">
+            ← Back to Dashboard
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

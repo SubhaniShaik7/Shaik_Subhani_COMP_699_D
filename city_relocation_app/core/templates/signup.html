@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="auth-container">
+
+    <h2>Create Your Account</h2>
+
+    <p class="auth-description">
+        Start planning your relocation journey. Create your account to organize tasks, track progress, and access helpful services.
+    </p>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-container">
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Registration Form -->
+    <form method="POST" action="{{ url_for('auth.register') }}" class="auth-form">
+
+        <div class="form-group">
+            <label for="name">Full Name</label>
+            <input 
+                type="text" 
+                id="name"
+                name="name" 
+                placeholder="Enter your full name"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input 
+                type="email" 
+                id="email"
+                name="email" 
+                placeholder="Enter your email address"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input 
+                type="password" 
+                id="password"
+                name="password" 
+                placeholder="Minimum 6 characters"
+                required
+            >
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="primary-btn">
+            Create Account
+        </button>
+
+    </form>
+
+    <!-- Divider -->
+    <div class="auth-divider">
+        <span>OR</span>
+    </div>
+
+    <!-- Navigation -->
+    <div class="auth-links">
+        <p>Already have an account?</p>
+        <a href="{{ url_for('auth.home') }}" class="secondary-btn">
+            Login Here
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

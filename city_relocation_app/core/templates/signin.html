@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="auth-container">
+
+    <h2>Welcome Back</h2>
+
+    <p class="auth-description">
+        Sign in to access your relocation plans, manage tasks, and track your progress.
+    </p>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-container">
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Login Form -->
+    <form method="POST" action="{{ url_for('auth.login') }}" class="auth-form">
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input 
+                type="email" 
+                id="email"
+                name="email" 
+                placeholder="Enter your email address" 
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input 
+                type="password" 
+                id="password"
+                name="password" 
+                placeholder="Enter your password" 
+                required
+            >
+        </div>
+
+        <button type="submit" class="primary-btn">
+            Login
+        </button>
+
+    </form>
+
+    <!-- Divider -->
+    <div class="auth-divider">
+        <span>OR</span>
+    </div>
+
+    <!-- Navigation -->
+    <div class="auth-links">
+        <p>Don't have an account?</p>
+        <a href="{{ url_for('auth.register') }}" class="secondary-btn">
+            Create Account
+        </a>
+    </div>
+
+    <!-- Privacy -->
+    <div class="auth-links">
+        <a href="{{ url_for('misc.privacy') }}" class="privacy-link">
+            View Privacy Policy
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

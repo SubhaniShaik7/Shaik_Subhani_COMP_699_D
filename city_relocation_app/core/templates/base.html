@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>City Relocation Assistant</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main_style.css') }}">
+
+    <!-- Icons -->
+    <script src="https://kit.fontawesome.com/4c3b5d9a8a.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="main-header">
+    <div class="logo-section">
+        <i class="fas fa-city logo-icon"></i>
+        <h1 class="app-title">City Relocation Assistant</h1>
+    </div>
+
+    {% if current_user.is_authenticated %}
+    <div class="nav-buttons">
+        <a href="{{ url_for('dashboard.view_dashboard') }}" class="nav-btn">Dashboard</a>
+        <a href="{{ url_for('auth.logout') }}" class="nav-btn logout-btn">Logout</a>
+    </div>
+    {% endif %}
+</header>
+
+<div class="layout">
+
+    <!-- ================= SIDEBAR ================= -->
+    {% if current_user.is_authenticated %}
+    <aside class="sidebar">
+        <h3 class="menu-title">Menu</h3>
+
+        <a href="{{ url_for('dashboard.view_dashboard') }}">
+            <i class="fas fa-home"></i> Dashboard
+        </a>
+
+        <a href="{{ url_for('planner.create_plan') }}">
+            <i class="fas fa-plus-circle"></i> Create Plan
+        </a>
+
+        <a href="{{ url_for('misc.services', city_id=1) }}">
+            <i class="fas fa-map-marker-alt"></i> Services
+        </a>
+
+        <!-- 🔥 FIXED ADMIN LINK -->
+        {% if current_user.role == 'admin' %}
+        <a href="{{ url_for('admin.admin_panel') }}">
+            <i class="fas fa-tools"></i> Admin Panel
+        </a>
+        {% endif %}
+    </aside>
+    {% endif %}
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main class="main-content">
+
+        <!-- FLASH MESSAGES -->
+        <div class="flash-container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        {% if current_user.is_authenticated %}
+        <section class="welcome-card">
+            <!-- 🔥 FIXED username -->
+            <h2>Welcome, {{ current_user.username }}</h2>
+            <p>
+                Plan your relocation with clarity. Track tasks, manage deadlines,
+                and explore essential services in your new city.
+            </p>
+        </section>
+
+        <section class="guide-card">
+            <h3>Quick Guide</h3>
+            <ul>
+                <li>Create your relocation plan</li>
+                <li>Manage tasks efficiently</li>
+                <li>Track your progress</li>
+                <li>Explore nearby services</li>
+            </ul>
+        </section>
+        {% endif %}
+
+        <!-- Dynamic Content -->
+        <section class="content-card">
+            {% block content %}{% endblock %}
+        </section>
+
+    </main>
+
+</div>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+    <p>ShaikCities 2026 all rights reserved</p>
+</footer>
+
+<!-- AUTO HIDE FLASH -->
+<script>
+setTimeout(() => {
+    document.querySelectorAll('.flash-message').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(-10px)';
+        setTimeout(() => el.remove(), 300);
+    });
+}, 3000);
+</script>
+
+</body>
+</html>
